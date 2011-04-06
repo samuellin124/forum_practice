@@ -1,0 +1,15 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", admin_forum_posts_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_forum_post_path
+      %li.active= link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_forum_post_path
+  .content
+    %h2.title
+      = t("web-app-theme.edit", :default => "Edit")
+      Post
+    .inner
+      = form_for [@forum, @post], :url => admin_forum_post_path(@forum, @post), :html => { :class => :form, :multipart => true } do |f|
+        = render :partial => "form", :locals => {:f => f}
+        = attachment_helper(@post)
+- content_for :sidebar, render(:partial => 'shared/sidebar')

@@ -1,0 +1,36 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_forums_path
+      -if is_admin?(current_user)
+        %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_forum_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Forums
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            = t("activerecord.attributes.forum.name", :default => t("activerecord.labels.name", :default => "Topic"))
+          %th Posts
+          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - @forums.each do |forum|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = forum.id
+            %td
+              = link_to forum.name, admin_forum_posts_path(forum)
+            %td
+              = " (" +forum.posts.count.to_s + ")"
+            %td
+              = forum.created_at
+            %td.last
+              -if is_admin?(current_user)
+                \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_forum_path(forum)} |
+                \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_forum_path(forum), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+- content_for :sidebar, render(:partial => 'shared/sidebar')
