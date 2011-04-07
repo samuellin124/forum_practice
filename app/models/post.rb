@@ -28,10 +28,10 @@ class Post < ActiveRecord::Base
 
 #  after_create :send_mails
 #
-  def send_mails(post)
+  def send_mails
     users = User.all
-    users.each do |user|
-       UserMailer.new_post(user, post).deliver
+    users.find_each do |user|
+       UserMailer.new_post(user, self).deliver
     end
   end
 
@@ -40,8 +40,8 @@ class Post < ActiveRecord::Base
   end
 
   def self.perform(id)
-    post = find id
-    post.send_mails(post)
+    post = find(id)
+    post.send_mails
   end
 
 end
